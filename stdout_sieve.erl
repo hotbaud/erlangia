@@ -18,7 +18,6 @@ main(X) ->
   io:format("Euler Sum: ~p PrimeCount: ~p~n", [EulerSum, Primes_len]).
 
 
-is_toobig(N, L) -> N * N > lists:last(L).
 
 euler_sum(N) -> lists:foldl(fun(E,A)-> E+A end, 0, sieve(N)).
 
@@ -30,14 +29,14 @@ filter([_|T], Prime, Acc) -> filter(T, Prime, Acc).
 sieve(MaxNum) when MaxNum > 1 -> lists:reverse(sieve(lists:seq(2, MaxNum), []));
 sieve(MaxNum) when MaxNum =< 1 -> [].
 
+is_toobig(N, L) -> N * N > lists:last(L).
+
 sieve([], Acc) -> Acc;
 sieve([H | T], Acc)->
   case is_toobig(H,T) of
     true ->
-      io:format("~p\n", [H]),
-      Primes = lists:append([lists:reverse(T), [H], Acc]),
-      lists:foreach(fun(N) -> io:format("~p~n",[N]) end, T),
-      Primes;
+      lists:foreach(fun(N) -> io:format("~p~n",[N]) end, [H] ++ T),
+      lists:append([lists:reverse(T), [H], Acc]);
     false->
       io:format("~p\n", [H]),
       sieve(filter(T, H), [H | Acc])

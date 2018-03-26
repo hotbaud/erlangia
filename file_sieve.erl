@@ -21,26 +21,25 @@ main(X, FileName) ->
   io:fwrite(FileDesc, "Euler Sum: ~p PrimeCount: ~p~n", [EulerSum, length(Primes)]),
   file:close(FileDesc).
 
-% If the square of the candidate is larger then the last element, we can stop
-% searching since the remaining elements in the list will be prime.
-is_toobig(N, L) -> N * N > lists:last(L).
-
 filter(L, Prime) -> lists:reverse(filter(L,Prime,[])).
 filter([], _, Acc) -> Acc;
 filter([H|T], Prime, Acc) when H rem Prime /= 0 -> filter(T, Prime, [H|Acc]);
 filter([_|T], Prime, Acc) -> filter(T, Prime, Acc).
 
-sieve(MaxNum, FileDesc) when MaxNum > 1 -> lists:reverse(sieve((lists:seq(2, MaxNum)),[], FileDesc));
+sieve(MaxNum, FileDesc) when MaxNum > 1 -> 
+  lists:reverse(sieve((lists:seq(2, MaxNum)),[], FileDesc));
 sieve(MaxNum, _) when MaxNum =< 1 -> [].
+
+% If the square of the candidate is larger then the last element, we can stop
+% searching since the remaining elements in the list will be prime.
+is_toobig(N, L) -> N * N > lists:last(L).
 
 sieve([], Acc, _) -> Acc;
 sieve([H | T], Acc, FileDesc)->
   case is_toobig(H,T) of
     true ->
-      io:fwrite(FileDesc,"~p\n", [H]),
-      Primes = lists:append([lists:reverse(T), [H], Acc]),
-      lists:foreach(fun(N) -> io:fwrite(FileDesc,"~p~n",[N]) end, T),
-      Primes;
+      lists:foreach(fun(N) -> io:fwrite(FileDesc,"~p~n",[N]) end, [H] ++ T),
+      lists:append([lists:reverse(T), [H], Acc]);
     false->
       io:fwrite(FileDesc, "~p\n", [H]),
       sieve(filter(T, H), [H | Acc], FileDesc)
