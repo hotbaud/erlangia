@@ -11,9 +11,6 @@
 -author("Anne Marie Merritt").
 -export([main/1, sieve/1, euler_sum/1]).
 
-%main(X) -> io:format("Primes: ~w~n", [sieve(X)]).
-
-
 main(X) ->
   Primes = sieve(X),
   EulerSum=lists:foldl(fun(E,A)-> E+A end, 0, Primes),
