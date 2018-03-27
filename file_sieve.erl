@@ -2,7 +2,7 @@
 %%% @author Anne Marie Merritt
 %%% @copyright (C) 2018 Anne Marie Merritt
 %%% @doc
-%%% This program uses the Sieve of Erathenese to find primes between
+%%% This program uses the Sieve of Eratosthenes to find primes between
 %%% 2 and the given maximum. The default output is to a file "primes.txt",
 %%% otherwise a different file can be specified in the second argument.
 %%% @end
@@ -41,7 +41,7 @@ sieve([H | T], Acc, FileDesc)->
       lists:foreach(fun(N) -> io:fwrite(FileDesc,"~p~n",[N]) end, [H] ++ T),
       lists:append([lists:reverse(T), [H], Acc]);
     false->
-      io:fwrite(FileDesc, "~p\n", [H]),
+      io:fwrite(FileDesc, "~p~n", [H]),
       sieve(filter(T, H), [H | Acc], FileDesc)
   end.
 

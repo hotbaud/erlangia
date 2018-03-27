@@ -2,7 +2,7 @@
 %%% @author Anne Marie Merritt
 %%% @copyright (C) 2018, Anne Marie Merritt
 %%% @doc
-%%% This module implements the Sieve of Eratothenes. This version outputs
+%%% This module implements the Sieve of Eratoshenes. This version outputs
 %%% primes and the Euler Sum of primes to stdout, along with a count of
 %%% how many primes were identified. The sum and count do not include '1'.
 %%% @end
@@ -16,8 +16,6 @@ main(X) ->
   EulerSum=lists:foldl(fun(E,A)-> E+A end, 0, Primes),
   Primes_len = length(Primes),
   io:format("Euler Sum: ~p PrimeCount: ~p~n", [EulerSum, Primes_len]).
-
-
 
 euler_sum(N) -> lists:foldl(fun(E,A)-> E+A end, 0, sieve(N)).
 
@@ -38,7 +36,7 @@ sieve([H | T], Acc)->
       lists:foreach(fun(N) -> io:format("~p~n",[N]) end, [H] ++ T),
       lists:append([lists:reverse(T), [H], Acc]);
     false->
-      io:format("~p\n", [H]),
+      io:format("~p~n", [H]),
       sieve(filter(T, H), [H | Acc])
   end.
 
