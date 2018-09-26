@@ -44,4 +44,3 @@ sieve([H | T], Acc, FileDesc)->
       io:fwrite(FileDesc, "~p~n", [H]),
       sieve(filter(T, H), [H | Acc], FileDesc)
   end.
-
